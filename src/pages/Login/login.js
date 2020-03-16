@@ -40,6 +40,7 @@ export default class Login extends Component {
         return (
             <div id='login'>
                 <div className='login-loginIn'>
+                    <h1>龙雅轩银店 - 库存管理系统</h1>
                     <h1>用户登录</h1>
                     <input type='text' placeholder='用户名' className='user entry'/>
                     <input type='password' placeholder='密码' className='pwd entry'/>
