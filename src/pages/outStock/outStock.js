@@ -85,7 +85,7 @@ export default class OutStock extends Component {
         e.target.ownerDocument.querySelector('.searchDateStart').value = '';
         e.target.ownerDocument.querySelector('.searchDateEnd').value = '';
         var head = {head:'Authorization',value:'Bearer '+utils.token};
-        AJAX.AJAX('http://106.12.194.98/api/goods/reduce/history?date_start='+DATE.getDate('day','-')+'&date_end='+DATE.getDate('day','-'),'GET',false,head,this.isLogin,this.error);
+        AJAX.AJAX('http://106.12.194.98/api/goods/reduce/history','GET',false,head,this.isLogin,this.error);
     }
     showCustomer(){
         var _this = this;
@@ -169,7 +169,7 @@ export default class OutStock extends Component {
                         {_this.state.isentry && <Entry 
                             close={()=>{_this.setState({isentry:false}); _this.getData()}}
                             isOutStock = {true}
-                            HEAD={[{title:'状态',name:'未录入'},{title:'商品编号',name:'goods_number'},{title:'客户名称',name:'customer'},
+                            HEAD={[{title:'状态',name:'未录入'},{title:'商品编号',name:'goods_number'},{title:'商品名称',name:'goods_name'},{title:'客户名称',name:'customer'},
                             {title:'工费类型',name:'goods_type'},{title:'工费',name:'goods_laborcost'},
                             {title:'商品重量(件/g)',name:'weight'},{title:'总计件数',name:'num'},
                             {title:'合计克重(g)',name:'weight_all'},{title:'合计价钱($)',name:'price_all'},

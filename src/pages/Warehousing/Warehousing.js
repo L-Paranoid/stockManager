@@ -134,7 +134,7 @@ export default class Warehousing extends Component {
         e.target.ownerDocument.querySelector('.searchDateStart').value = '';
         e.target.ownerDocument.querySelector('.searchDateEnd').value = '';
         var head = {head:'Authorization',value:'Bearer '+utils.token};
-        AJAX.AJAX('http://106.12.194.98/api/goods/add/history?date_start='+DATE.getDate('day','-')+'&date_end='+DATE.getDate('day','-'),'GET',false,head,this.isLogin,this.error);
+        AJAX.AJAX('http://106.12.194.98/api/goods/add/history','GET',false,head,this.isLogin,this.error);
     }
     showSupplier(){
         var _this = this;

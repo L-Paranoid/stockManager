@@ -4,7 +4,7 @@ import 'pageStyle/common/commonLeftMenu.less';
 export default class CommonLeftMenu extends Component {
     componentDidMount(){
         if(document.querySelector('.Allmenu')){
-            var num = location.pathname == '/index' || location.pathname == '/goodsDetail'?0:(location.pathname == '/warehousing'?1:(location.pathname == '/outStock'?2:location.pathname == '/stockHistory'?3:''));
+            var num = location.pathname == '/index' || location.pathname == '/goodsDetail'?0:(location.pathname == '/warehousing'?1:(location.pathname == '/outStock'?2:location.pathname == '/stockHistory'?3:(location.pathname == '/MonthlyStatistics'?4:'')));
             if(!document.querySelector('.Allmenu').querySelectorAll('li')[num].classList.contains('active')) document.querySelector('.Allmenu').querySelectorAll('li')[num].classList.add('active');
         }
     }
@@ -40,6 +40,7 @@ export default class CommonLeftMenu extends Component {
                         <li><Link to='/warehousing'>商品入库</Link></li>
                         <li><Link to='/outStock'>商品出库</Link></li>
                         <li><Link to='/stockHistory'>商品出入库记录</Link></li>
+                        <li><Link to='/MonthlyStatistics'>月度销售统计</Link></li>
                     </ul>
                 </div>
             </div>

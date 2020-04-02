@@ -326,16 +326,44 @@ export default class Entry extends Component{
     entryBlur(e){
         //输入商品编号带出数据
         var _this = this;
-        if(e.target.id != 'goods_number' || e.target.value.replace(/\s/,'') == ''){
+        if((e.target.id != 'goods_number' && (e.target.id != 'goods_name' && _this.props.isOutStock) ) || e.target.value.replace(/\s/,'') == ''){
             return ;
         }
         var tr = event.target.parentNode.parentNode;
-        var goods_number  = tr.querySelector('#goods_number').value;
         _this.setState({
             trID:(parseInt(tr.dataset.index)-1)
         })
-        var header = {head:'Authorization',value:'Bearer '+utils.token};
-        AJAX.AJAX('http://106.12.194.98/api/goods/all?goods_number='+goods_number,'GET',false,header,_this.getEntryData,_this.error);
+        if(e.target.id == 'goods_number'){
+            var goods_number  = tr.querySelector('#goods_number').value;
+            var header = {head:'Authorization',value:'Bearer '+utils.token};
+            AJAX.AJAX('http://106.12.194.98/api/goods/all?goods_number='+goods_number,'GET',false,header,_this.getEntryData,_this.error);
+        }
+        if(e.target.id == 'goods_name'){
+            var goods_name = tr.querySelector('#goods_name').value;
+            var header = {head:'Authorization',value:'Bearer '+utils.token};
+            AJAX.AJAX('http://106.12.194.98/api/goods/all?goods_name='+goods_name,'GET',false,header,_this.getGoodNameData,_this.error);
+        }
+    }
+    getGoodNameData = (res) => {
+        //获取对应商品名称库存并填充
+        var _this = this;
+        res = JSON.parse(res);
+        var data = res.data.data[0];
+        if(!data){
+            return;
+        }
+        var tr = document.querySelector('.entryContent').querySelector('tbody').querySelectorAll('tr')[this.state.trID];
+        tr.querySelector('#goods_number').value = data.goods_number;
+        tr.querySelector('#goods_name').value = data.goods_name;
+        tr.querySelector('#num').placeholder = data.num;
+        tr.querySelector('#goods_type').value = data.goods_type;
+        tr.querySelector('#goods_type').nextElementSibling.value = data.goods_type;
+        if(data.goods_type == '1'){
+            tr.querySelector('#weight').value = data.weight;
+        }
+        tr.querySelector('#weight_all').placeholder = data.weight_all;
+        tr.querySelector('#goods_laborcost').placeholder = data.laborcost;
+        _this.selectType(tr.querySelector('#goods_type'));
     }
     getEntryData=(res)=>{
         //获取对应编号库存并填充
@@ -357,6 +385,7 @@ export default class Entry extends Component{
             tr.querySelector('#goods_laborcost').value = data.laborcost;
             tr.querySelector('#supplier').value = data.supplier;
         }else{
+            tr.querySelector('#goods_name').value = data.goods_name;
             tr.querySelector('#num').placeholder = data.num;
             tr.querySelector('#goods_type').value = data.goods_type;
             tr.querySelector('#goods_type').nextElementSibling.value = data.goods_type;
@@ -428,7 +457,7 @@ export default class Entry extends Component{
                                  (item.title == '工费类型' ? <td><input type='text' style={{display:'none'}} id={item.name} name={item.name} defaultValue='1'/>
                                  <select onChange={_this.selectType.bind(_this)}><option value='1'>件</option><option value='2'>克</option></select></td>:
                                  ( item.title== '供应商'?_this.getSupplier(item.name):
-                                 (item.title == '商品编号' && !_this.props.isOutStock?<td className='number'><input type='text' name={item.name}  id={item.name}/><button onClick={_this.randomWord.bind(_this,true,6,8)}>生成</button></td>:
+                                 (item.title == '商品编号' && !_this.props.isOutStock?<td className='number'><input type='text' name={item.name}  id={item.name}/><button onClick={_this.randomWord.bind(_this,true,5,6)}>生成</button></td>:
                                  (item.title == '客户名称' && _this.props.isOutStock?_this.getSupplier(item.name):
                                  <td><input type='text' name={item.name}  id={item.name}/></td>))))))) 
                                 })}

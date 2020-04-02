@@ -39,7 +39,6 @@ export default class pageFooter extends Component {
     }
 
     goPage(num){
-        debugger
         var groupCount = this.state.groupCount;
         if(num % groupCount === 1 && (this.props.CONTENT.last_page - num)>this.state.groupCount){
             this.setState({

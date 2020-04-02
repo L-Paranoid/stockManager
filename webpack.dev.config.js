@@ -3,7 +3,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const uglify = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');  //为less css单独打包插件
 module.exports = {
-    //devtool:'eval-source-map',
+    devtool:'eval-source-map',
     //要压缩文件入口
     entry:[
         'react-hot-loader/patch',
@@ -71,7 +71,8 @@ module.exports = {
     plugins:[
         new ManifestPlugin(),
         new ExtractTextPlugin('css/index.css'),
-        new uglify()
+        
+        
     ],
     //new uglify()  正式环境 打包压缩
     resolve: {

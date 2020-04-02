@@ -42,6 +42,7 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
+    "echarts": "^4.7.0",
     "gulp-reactify": "^3.0.1",
     "layui-src": "^2.5.5",
     "react": "^16.12.0",

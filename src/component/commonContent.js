@@ -29,8 +29,14 @@ export default class CommonContent extends Component{
         //统计当前页面 工费 合计
         var _this = this;
         if(prevProps != _this.props){
-            _this.total_laborcost();
+            var search = decodeURIComponent(location.search.split('?')[1]);
+            var head = {head:'Authorization',value:'Bearer '+utils.token};
+            AJAX.AJAX('http://106.12.194.98/api/goods/all?goods_category='+search+'&num=5000','GET',false,head,this.total_laborcost,this.errorTotal);
+            // _this.total_laborcost();
         }
+    }
+    errorTotal(res){
+        alert(res);
     }
     deleteClick(e){
         var _this = this;
@@ -68,7 +74,9 @@ export default class CommonContent extends Component{
             // if(num < 2){
             //     _this.isSubmit(num+=1);
             // }
-            alert('密码不正确!');
+            if(isPwd != null){
+                alert('密码不正确!');
+            }
             return false;
         }else{
             return true;
@@ -132,28 +140,40 @@ export default class CommonContent extends Component{
             alert(res.msg);
         }
     }
-    error(res){
-        alert(res.msg);
+    error=(res)=>{
+        if(!this.props.isOutStock){
+            alert('当前商品库存不足,剩余库存小于当前条记录,无法删除!');
+        }else{
+            alert('当前商品库存已售空,因商品编号问题,无法退货请手动添加当前种类,再次退换货!');
+        }
     }
     checked(e){
         e.target.parentNode.parentNode.classList.add('delete');
     }
-    total_laborcost(){
+    total_laborcost=(res)=>{
         var _this = this;
-        //当前页面 工费 字段合计
-        var laborcostTd = document.querySelectorAll('#allLaborcost');
-        if(laborcostTd.length < 1){
-            _this.setState({
-                total_laborcost : 0
-            })
-            return ;
-        }
+        var data = JSON.parse(res).data.data;
+        //当前全部数据 总计工费 字段合计
+        // var laborcostTd = document.querySelectorAll('#allLaborcost');
+        // if(laborcostTd.length < 1){
+        //     _this.setState({
+        //         total_laborcost : 0
+        //     })
+        //     return ;
+        // }
         var money = parseFloat(0);
-        [].forEach.call(laborcostTd,function(item,index){
+        [].forEach.call(data,function(item,index){
             if(item){
-                money +=  parseFloat(item.textContent);
+                if(item.goods_type == 1){
+                    money +=  parseFloat(item.laborcost*item.num);
+                }
+                if(item.goods_name == 2){
+                    money +=  parseFloat(item.laborcost*item.weight_all);
+                }
+                
             }
         })
+
         _this.setState({
             total_laborcost : money.toFixed(2)
         })
@@ -216,6 +236,8 @@ export default class CommonContent extends Component{
                                 var output = _this.props.AllData.stat_weight_total;
                             }else if(d.title=='总计工费' ){
                                  var output = _this.state.total_laborcost;
+                            }else if(d.title == '工费'){
+                                var output = _this.props.AllData.stat_laborcost_total;
                             }else{
                                 var output = '';
                             }
