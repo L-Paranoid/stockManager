@@ -19,7 +19,7 @@ export default class Index extends Component {
     }
     componentDidMount=()=>{
         var _this = this;
-        var param = location.search.split('?')[1];
+        var param = location.search.split('=')[1];
         _this.getData(param);
         
     }

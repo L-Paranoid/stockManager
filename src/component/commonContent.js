@@ -211,7 +211,7 @@ export default class CommonContent extends Component{
                     (v.title == '工费类型'?(item[v.name] == '1'?'件工费':'克工费'):
                     (v.title == '商品种类' && _this.state.indexFlag ?<Link to={{
                         pathname:'/goodsDetail',
-                        search:'?'+item[v.name],
+                        search:'?goods_category='+item[v.name],
                         state: { fromWechat: true }
                     }}>{item[v.name]}</Link>:
                     (v.title == '总计工费' && v.name == 'allLaborcost' ? (totalLaborcost?totalLaborcost:0) :item[v.name])))))}</td>

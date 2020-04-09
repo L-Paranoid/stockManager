@@ -78,6 +78,9 @@ export default class pageFooter extends Component {
         if(url.lastIndexOf('&') !== url.length-1){
             url +='?';
         }
+        if(location.href.indexOf('goodsDetail')!=-1){
+            url = 'http://106.12.194.98/api/goods/all?goods_category='+location.href.split('=')[1]+'&';
+        }
         var head = {head:'Authorization',value:'Bearer '+utils.token};
         AJAX.AJAX(url+'page='+num,'GET',false,head,this.props.isLogin,this.error);
     }
